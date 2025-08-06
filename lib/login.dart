@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,11 +18,15 @@ class _LoginPageState extends State<LoginPage> {
     String error = '';
     login() async {
       try {
-        var isLoggedIn = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.toString().trim(),
           password: passwordController.toString().trim(),
         );
-        Navigator.pushNamed(context, '/dashboard');
+        final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardPage(uid: uid)),
+        );
       } catch (e) {
         error = e.toString();
       }
@@ -44,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 10),
             ElevatedButton(onPressed: login, child: Text('login')),
-            error.isNotEmpty ? Text(error) : SizedBox.shrink()
+            error.isNotEmpty ? Text(error) : SizedBox.shrink(),
           ],
         ),
       ),

@@ -17,13 +17,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Firebase Test App',
-      home: LoginPage(key: const Key('login_page')),
-      routes: {
-        "/" : (context)=> LoginPage(),
-        "/dashboard": (context) => DashboardPage(uid: "default_uid")
-      },
-    );
+    return MaterialApp(title: 'Firebase Test App', home: LoginPage());
   }
 }
