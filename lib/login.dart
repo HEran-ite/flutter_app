@@ -15,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
     String error = '';
-    login() async {
+    Future<void> login() async {
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.toString().trim(),

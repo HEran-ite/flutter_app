@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DashboardPage extends StatelessWidget {
   final String uid;
@@ -24,6 +25,7 @@ class DashboardPage extends StatelessWidget {
       body: Column(
         children: [
           Text('Welcome $username'),
+          Text("${dotenv.env['apiKey']}"),
           ElevatedButton(onPressed: () {}, child: Text('update')),
         ],
       ),
