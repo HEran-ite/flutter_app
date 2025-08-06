@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_app/dashboard.dart';
 import 'package:flutter_app/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'firebase_options.dart'; // Auto-generated
@@ -19,6 +20,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Firebase Test App',
       home: LoginPage(key: const Key('login_page')),
+      routes: {
+        "/" : (context)=> LoginPage(),
+        "/dashboard": (context) => DashboardPage(uid: "default_uid")
+      },
     );
   }
 }
