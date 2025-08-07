@@ -10,46 +10,58 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  String error = '';
+  Future<void> login() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardPage(uid: uid)),
+      );
+    } catch (e) {
+      setState(() {
+        error = e.toString(); // This triggers UI update
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    String error = '';
-    Future<void> login() async {
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.toString().trim(),
-          password: passwordController.toString().trim(),
-        );
-        final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => DashboardPage(uid: uid)),
-        );
-      } catch (e) {
-        error = e.toString();
-      }
-    }
-
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
-
+      appBar: AppBar(title: const Text('Login')),
       body: Center(
-        child: Column(
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(label: Text('email')),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(label: Text('password')),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(onPressed: login, child: Text('login')),
-            error.isNotEmpty ? Text(error) : SizedBox.shrink(),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: passwordController,
+                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(onPressed: login, child: const Text('Login')),
+              const SizedBox(height: 10),
+              if (error.isNotEmpty)
+                Text(
+                  error,
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+            ],
+          ),
         ),
       ),
     );
