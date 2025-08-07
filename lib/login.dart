@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } catch (e) {
       setState(() {
-        error = e.toString(); // This triggers UI update
+        error = e.toString();
       });
     }
   }
